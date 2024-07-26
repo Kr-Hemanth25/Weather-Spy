@@ -1,36 +1,53 @@
+const apiKey = 'c79c2a1637d9a6185791a322bcbcca8a';
+
+// Function to update the weather information in the DOM
+function updateWeather(data) {
+    const tempDisplay = document.querySelector(".temp");
+    const locDisplay = document.querySelector(".loc");
+    const feelsLikeDisplay = document.querySelector(".flf");
+    const humidityDisplay = document.querySelector(".humf");
+    const humidityLabel = document.getElementById("hum");
+    const feelsLikeLabel = document.getElementById("feel");
+
+    tempDisplay.innerHTML = `${parseInt(data.main.temp)}&#8451;`;
+    locDisplay.innerHTML = data.name;
+    feelsLikeDisplay.innerHTML='Feelslike:'+data.main.feels_like
+          humidityDisplay.innerHTML='Humidity:'+data.main.humidity
+    humidityLabel.style.visibility = "visible";
+    feelsLikeLabel.style.visibility = "visible";
+}
+
+// Function to fetch weather data
+async function fetchWeather(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Failed to fetch weather data');
+        }
+        const data = await response.json();
+        updateWeather(data);
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+        alert('Error fetching weather data. Please try again later.');
+    }
+}
+
+// Success callback for geolocation
 const successCallback = (position) => {
+    const { latitude, longitude } = position.coords;
+    console.log('Position:', position, `Longitude: ${longitude}`);
 
-  let app=position
-  console.log(position,app.coords.longitude);
-  async function main() {
-    let key='c79c2a1637d9a6185791a322bcbcca8a'
-    let lat=app.coords.latitude
-    let long=app.coords.longitude
-    let udata1=await fetch('https://api.openweathermap.org/data/2.5/weather?units=metric'+`&lat=${lat}`+`&lon=${long}`+`&appid=${key}`)
-    let data1 =await udata1.json()
-    let loc1=data1.name
-    var c1=document.body.querySelector(".temp")
-    let d1=document.body.querySelector(".loc")
-
-    c1.innerHTML=parseInt(data1.main.temp)+'&#8451';
-    d1.innerHTML=data1.name
-
-    let e1=document.body.querySelector(".flf")
-    let f1=document.body.querySelector(".humf")
-    e1.innerHTML='Feelslike:'+data1.main.feels_like
-    f1.innerHTML='Humidity:'+data1.main.humidity
-    document.getElementById("hum").style.visibility="visible"
-    document.getElementById("feel").style.visibility="visible"
-    
-
-    
-  }
-  main()
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+    fetchWeather(weatherUrl);
 };
 
+// Error callback for geolocation
 const errorCallback = (error) => {
-  console.log(error);
+    console.error('Geolocation error:', error);
+    alert('Error retrieving location. Please enable location services and try again.');
 };
-// let a=5;
+
+// Request current position
 navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+
 
