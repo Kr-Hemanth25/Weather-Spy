@@ -1,37 +1,55 @@
-let a=document.body.querySelector(".place")
-a.addEventListener("keydown",(e)=>{
-    if(e.key==='Enter')
-    {
-        main()
-      
+// Select elements
+const placeInput = document.querySelector(".place");
+const searchButton = document.querySelector(".simg");
+const tempDisplay = document.querySelector(".temp");
+const locDisplay = document.querySelector(".loc");
+const feelsLikeDisplay = document.querySelector(".flf");
+const humidityDisplay = document.querySelector(".humf");
+const humidityLabel = document.getElementById("hum");
+const feelsLikeLabel = document.getElementById("feel");
+
+// Event listeners
+placeInput.addEventListener("keydown", async (e) => {
+    if (e.key === 'Enter') {
+        await main();
     }
-  })
-  
-  let b=document.body.querySelector(".simg")
-  b.addEventListener("click",(e)=>{
-    main()
-  }) 
+});
 
-  async function main()
-        {
-          let city=a.value
-          // console.log(city)
-          let apik='c79c2a1637d9a6185791a322bcbcca8a'
-          let response=await fetch("https://api.openweathermap.org/data/2.5/weather?units=metric"+`&q=${city}`+`&appid=${apik}`)
-          let data=await response.json()
-          console.log(data,data.name,data.main.temp)
-          var c=document.body.querySelector(".temp")
-          let d=document.body.querySelector(".loc")
+searchButton.addEventListener("click", async () => {
+    await main();
+});
 
-          c.innerHTML=parseInt(data.main.temp)+'&#8451';
-          d.innerHTML=data.name
+// Main function to fetch and display weather data
+async function main() {
+    const city = placeInput.value.trim();
+    if (!city) {
+        alert("Please enter a valid city name.");
+        return;
+    }
 
-          let e=document.body.querySelector(".flf")
-          let f=document.body.querySelector(".humf")
-          document.getElementById("hum").style.visibility="visible"
-          document.getElementById("feel").style.visibility="visible"
-          e.innerHTML='Feelslike:'+data.main.feels_like
-          f.innerHTML='Humidity:'+data.main.humidity
-          
+    const apiKey = 'c79c2a1637d9a6185791a322bcbcca8a';
+    try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}&appid=${apiKey}`);
+        
+        if (!response.ok) {
+            throw new Error("City not found");
         }
+
+        const data = await response.json();
+        console.log(data, data.name, data.main.temp);
+
+        tempDisplay.innerHTML = `${parseInt(data.main.temp)}&#8451;`;
+        locDisplay.innerHTML = data.name;
+        feelsLikeDisplay.innerHTML='Feelslike:'+data.main.feels_like
+          humidityDisplay.innerHTML='Humidity:'+data.main.humidity
+        
+        humidityLabel.style.visibility = "visible";
+        feelsLikeLabel.style.visibility = "visible";
+    } catch (error) {
+        alert(error.message);
+        console.error("Error fetching weather data:", error);
+    }
+}
+
+
         
