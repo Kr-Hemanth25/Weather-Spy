@@ -6,7 +6,7 @@ a.addEventListener("keydown",(e)=>{
       
     }
   })
-
+  
   let b=document.body.querySelector(".simg")
   b.addEventListener("click",(e)=>{
     main()
