@@ -12,6 +12,10 @@ Weather Spy is a simple and elegant weather application that provides real-time 
     - Enter any city or location to get the current weather details.
     - Displays temperature, humidity, and feels-like temperature for the searched location.
 
+3.**Where To Find **:
+- You can access the Weather Spy website at:(https://www.wspyfreewebhostmost.com)
+
+
 ## Getting Started
 
 ### Prerequisites
