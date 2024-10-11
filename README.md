@@ -13,7 +13,7 @@ Weather Spy is a simple and elegant weather application that provides real-time 
     - Displays temperature, humidity, and feels-like temperature for the searched location.
 
 3.**Where To Find **:
-- You can access the Weather Spy website at:https://wspy.freewebhostmost.com/
+- You can access the Weather Spy website at:https://wspy.netlify.app/
 
 
 ## Getting Started
